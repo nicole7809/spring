@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+	
+	<!-- 기존의 DAO 역할을 수행한다. -->
+	<!-- sql query 작성 -->
+	
+	<!-- id컬럼 == orgname변수 -->
+	<resultMap id="dtoMap" type="fileDTO">
+		<result column="idkorea" property="id"/>
+	</resultMap>
+	
+	<select id="idkorea" resultMap="dtoMap">
+		select id||'korea' idkorea from fileList
+	</select>
+	
+	
+	<select id="selectAll" resultType="fileDTO">
+		select * from fileList
+	</select>
+
+	<!-- id="태크이름"  resultType="sql실행결과 타입(dto / String / int)" -->
+	<!-- parameterType="DAO 에서 (?) 부분 의미한다." -->
+	<select id="selectOne" resultType="String" parameterType="int">
+		select id from fileList where num=#{value}
+	</select>
+	
+	<select id="selectFile" resultType="String" parameterType="fileDTO">
+		select orgname from fileList where num=#{num} and id=#{id}
+	</select>
+
+	<select id="selectId" resultType="String" parameterType="String">
+		select orgname from fileList where id=#{value}
+	</select>
+
+	<select id="selectMap" resultType="String" parameterType="map">
+		select orgname from fileList where id=#{mid} and num=#{mnum}
+	</select>
+	
+	<select id="selectCount" resultType="int" >
+		select count(*) from fileList 
+	</select>
+
+
+	<insert id="insertFile" parameterType="fileDTO">
+		insert into fileList values(fileList_seq.nextval,#{id},#{orgname},#{savename},sysdate)
+	</insert>
+
+	<update id="updateFile" parameterType="fileDTO">
+		update fileList set id=#{id}, orgname=#{orgname} where num=#{num}
+	</update>
+
+<!--  
+	<select id="selectId" parameterType="String">
+		select * from fileList where
+		id=#{value}
+	</select>
+
+	<select id="selectNum" parameterType="int">
+		select * from fileList
+		where num=#{value}
+	</select>
+
+	<select id="selectOne" parameterType="spring.model.FileDTO">
+		select * from fileList
+		where id=#{id} and num=#{num}
+	</select>
+-->
+
+
+
+<!-- 	
+	<select id=""></select>
+	<insert id=""></insert>
+	<update id=""></update>
+	<delete id=""></delete> 
+-->
+
+
+</mapper>
+
