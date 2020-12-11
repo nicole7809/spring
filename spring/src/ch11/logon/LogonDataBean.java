@@ -62,4 +62,5 @@ public class LogonDataBean{
 	public Timestamp getReg_date(){
  		return reg_date; 
  	}
+
 }

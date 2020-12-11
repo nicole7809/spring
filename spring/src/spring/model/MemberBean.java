@@ -12,13 +12,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch11.logon.LogonDBBean;
 import ch11.logon.LogonDataBean;
+import spring.model.service.LogonDBService;
 
 @Controller
 @RequestMapping("/member/")
 public class MemberBean {
 
+	// @Autowired
+	// private LogonDBBean memberDAO = null;
+
 	@Autowired
-	private LogonDBBean memberDAO = null;
+	private LogonDBService memberDAO = null;
+	private LogonDataBean id;
+	private Object passwd;
 
 	@RequestMapping("main.do")
 	public String main() {
@@ -37,12 +43,14 @@ public class MemberBean {
 	}
 
 	@RequestMapping("confirmId.do")
-	public String confirmId(String id, Model model) throws Exception {
-		int check = memberDAO.confirmId(id);
+	public String confirmId(LogonDataBean member, Model model) throws Exception {
+		int check = memberDAO.confirmId(member);
 		model.addAttribute("check", check);
-		model.addAttribute("id", id);
+		model.addAttribute("id", member.getId());
 		return "member/confirmId";
 	}
+
+	
 
 	@RequestMapping("loginForm.do")
 	public String loginForm() {
@@ -50,8 +58,8 @@ public class MemberBean {
 	}
 
 	@RequestMapping("loginPro.do")
-	public String loginPro(String id, String passwd, HttpSession session, Model model) throws Exception {
-		int check = memberDAO.userCheck(id, passwd);
+	public String loginPro(LogonDataBean member, HttpSession session, Model model) throws Exception {
+		int check = memberDAO.userCheck(id);
 		if (check == 1) {
 			session.setAttribute("memId", id);
 		}
@@ -90,9 +98,11 @@ public class MemberBean {
 	}
 
 	@RequestMapping("deletePro.do")
-	public String deletePro(HttpSession session, String passwd, Model model) throws Exception {
+	public String deletePro(HttpSession session, LogonDataBean member, Model model) throws Exception {
 		String id = (String) session.getAttribute("memId");
-		int check = memberDAO.deleteMember(id, passwd);
+		member.setId(id);
+		
+		int check = memberDAO.deleteMember(member);
 		if (check == 1) {
 			session.invalidate();
 		}
