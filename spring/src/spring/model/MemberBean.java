@@ -67,19 +67,22 @@ public class MemberBean {
 		return "member/loginPro";
 	}
 
+	
+	
+	
 	@RequestMapping("logout.do")
-	public String logout(HttpSession session) {
+	public String logon_logout(HttpSession session) {
 		session.invalidate();
 		return "member/logout";
 	}
 
 	@RequestMapping("modify.do")
-	public String modify() {
+	public String logon_modify() {
 		return "member/modify";
 	}
 
 	@RequestMapping("modifyForm.do")
-	public String modifyForm(HttpSession session, Model model) throws Exception {
+	public String logon_modifyForm(HttpSession session, Model model) throws Exception {
 		String id = (String) session.getAttribute("memId");
 		LogonDataBean c = memberDAO.getMember(id);
 		model.addAttribute("c", c);
@@ -87,18 +90,18 @@ public class MemberBean {
 	}
 
 	@RequestMapping("modifyPro.do")
-	public String modifyPro(LogonDataBean dto) throws Exception {
+	public String logon_modifyPro(LogonDataBean dto) throws Exception {
 		memberDAO.updateMember(dto);
 		return "member/modifyPro";
 	}
 
 	@RequestMapping("deleteForm.do")
-	public String deleteForm() throws Exception {
+	public String logon_deleteForm() throws Exception {
 		return "member/deleteForm";
 	}
 
 	@RequestMapping("deletePro.do")
-	public String deletePro(HttpSession session, LogonDataBean member, Model model) throws Exception {
+	public String logon_deletePro(HttpSession session, LogonDataBean member, Model model) throws Exception {
 		String id = (String) session.getAttribute("memId");
 		member.setId(id);
 		
